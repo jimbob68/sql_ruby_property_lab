@@ -58,7 +58,7 @@ end
       db.close()
   end
 
-
+# An instance method - goes through one table line
   def delete()
       db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
       sql = "DELETE FROM propertys_table WHERE id = $1"
@@ -76,5 +76,26 @@ end
         db.close()
     end
 
+    # Class Method - so we can search through everything
+    def Property.find(id)
+      db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
+      sql = "SELECT * FROM propertys_table WHERE id = $1;"
+      values = [id]
+      db.prepare("find", sql)
+      result = db.exec_prepared("find", values)
+      db.close()
+      return result.map {|property_hash| Property.new(property_hash)}
+    end
+
+    # Class Method - so we can search through everything
+    def Property.find_by_address(address)
+      db = PG.connect({ dbname: 'property_tracker', host: 'localhost'})
+      sql = "SELECT * FROM propertys_table WHERE address = $1;"
+      values = [address]
+      db.prepare("find", sql)
+      result = db.exec_prepared("find", values)
+      db.close()
+      return result.map {|property_hash| Property.new(property_hash)}
+    end
 
 end

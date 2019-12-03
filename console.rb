@@ -15,7 +15,10 @@ property1 = Property.new({
     'year_built' => 1920
     })
 
+Property.delete_all()
+
 property1.save()
+property2.save()
 
   binding.pry
   nil
